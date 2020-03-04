@@ -61,6 +61,37 @@ void judgingResult(std::ifstream &input, std::ofstream &output)
 {
 	std::string date;
 	while (getline(input, date)) {
+		//检查date字符格式，将其全部转换为"20100101"格式
+		auto p = date.find_first_of(",. 年月日\\ /");//p为date字符串中第一个' '、'/'、','、'.'、'\'、"年"、"月"、"日"的位置
+		while (p != std::string::npos) {
+			date.erase(p, 1);//删除p位置的字符
+			p = date.find_first_of(",. 年月日\\ /");
+		}
+
+		//解决201011之类的格式问题
+		if (date.length() < 8) {
+			std::string monthAndDays = date.substr(4);
+			//std::cout << monthAndDays << std::endl;
+			if (monthAndDays.length() == 2) {
+				monthAndDays.insert(0, "0");
+				monthAndDays.insert(2, "0");
+
+				date.replace(4, 7, monthAndDays);
+
+			}
+
+			else if (monthAndDays.length() == 3) {
+				if (monthAndDays.find_first_of("0") == 0) {//012
+					monthAndDays.insert(2, "0");//0102
+					date.replace(4, 8, monthAndDays);
+				}
+				else if (monthAndDays.find_first_of("0") == 1 || monthAndDays.find_first_of("0") == 2) {//102 || 120
+					monthAndDays.insert(0, "0");//0102
+					date.replace(4, 8, monthAndDays);
+				}
+			}
+		}
+
 		//先将字符串转化为数字
 		int dateNumber = std::stoi(date);
 		//std::cout << dateNumber << std::endl;

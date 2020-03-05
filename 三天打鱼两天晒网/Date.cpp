@@ -1,4 +1,5 @@
 #include "Date.h"
+//#include <iostream>
 
 int monthDays[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };//平年天数
 
@@ -17,7 +18,7 @@ int Date::fromDays()
 		armMonth = 1,
 		armDays = 1;
 
-	int intervalYear = year - armYear + 1;
+	int intervalYear = year - armYear;
 	int sumDays = 0;	
 	for (int i = 0; i < intervalYear; ++i) {
 		int temptYear = armYear + i;
@@ -27,13 +28,15 @@ int Date::fromDays()
 		else sumDays += 365;
 	}
 
+	//std::cout << "Date类" << year << " " << month << " " << days << std::endl;
+
 	if (leapYear(year)) monthDays[2] = 29;//闰年2月有29天
-	for (int i = 0; i < month; ++i) {
-		sumDays += monthDays[i + 1];
+	for (int i = 1; i < month; ++i) {
+		sumDays += monthDays[i];
 	}
 	monthDays[2] = 28;//恢复2月为平年28天
 
-	sumDays += days;
+	sumDays += days - 1;
 	return sumDays;
 }
 

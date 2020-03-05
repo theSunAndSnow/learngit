@@ -100,6 +100,7 @@ void judgingResult(std::ifstream &input, std::ofstream &output)
 		int month = dateNumber / 100;
 		dateNumber -= month * 100;
 		int days = dateNumber;
+		//std::cout << year << " " << month << " " << days << std::endl;
 
 		if (!legalDate(year, month, days)) {
 			output << date << "不是一个正确格式的日期，错误数据" << std::endl;
